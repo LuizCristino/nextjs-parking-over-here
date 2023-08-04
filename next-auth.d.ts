@@ -12,5 +12,6 @@ declare module 'next-auth' {
       exp: number;
       accessToken: string;
     };
+    token: string;
   }
 }

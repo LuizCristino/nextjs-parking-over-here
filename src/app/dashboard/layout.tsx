@@ -10,6 +10,7 @@ import {
 import { ReactNode } from 'react';
 import { MobileNav } from './_components/mobile-nav';
 import { SidebarContent } from './_components/sidebar-content';
+import { useSession } from 'next-auth/react';
 
 export type DashboardLayoutProps = {
   children?: ReactNode;
@@ -19,6 +20,11 @@ export default function DashboardLayout(props: DashboardLayoutProps) {
   const { children } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const session = useSession();
+
+  if (session.data?.user == null) {
+    return null;
+  }
 
   return (
     <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>

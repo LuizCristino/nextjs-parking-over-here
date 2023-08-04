@@ -4,6 +4,7 @@ import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import { type ReactNode } from 'react';
+import { SWRConfig } from 'swr';
 
 export type ProviderProps = {
   children: ReactNode;
@@ -13,11 +14,18 @@ export function Providers({ children }: ProviderProps) {
   return (
     <CacheProvider>
       <ChakraProvider theme={theme}>
-        <SessionProvider>{children}</SessionProvider>
+        <SWRConfig value={value}>
+          <SessionProvider>{children}</SessionProvider>
+        </SWRConfig>
       </ChakraProvider>
     </CacheProvider>
   );
 }
+
+const value = {
+  fetcher: (resource: any, init: any) =>
+    fetch(resource, init).then((res) => res.json()),
+};
 
 const colors = {
   brand: {

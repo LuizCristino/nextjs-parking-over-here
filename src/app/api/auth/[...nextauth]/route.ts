@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions, Session, User } from 'next-auth';
+import NextAuth, { AuthOptions, Session } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const api = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -13,18 +13,19 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
+      return { ...user, ...token };
     },
     async session({ session, token }) {
       session.user = token as unknown as Session['user'];
+      session.token = session.user.accessToken;
       return session;
     },
-    async redirect({ baseUrl, url }) {
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
-    },
+    // async redirect({ baseUrl, url }) {
+    //   if (url.startsWith('/')) return `${baseUrl}${url}`;
+    //   // Allows callback URLs on the same origin
+    //   else if (new URL(url).origin === baseUrl) return url;
+    //   return baseUrl;
+    // },
   },
   providers: [
     CredentialsProvider({
