@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { type ReactNode } from 'react';
 import './globals.css';
-import Provider from './provider';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 inter.className += 'h-full scroll-smooth antialiased';
@@ -20,9 +20,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en' className={inter.className}>
       <body className='flex h-full flex-col'>
-        <Provider>
+        <Providers>
           <main className='grow'>{children}</main>
-        </Provider>
+        </Providers>
       </body>
     </html>
   );
