@@ -5,6 +5,7 @@ import { FiEdit, FiEye, FiTrash } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 export type DataTableActionRowProps = {
+  noDetails: boolean;
   noEdit: boolean;
   noExclusion: boolean;
 };
@@ -12,7 +13,11 @@ export type DataTableActionRowProps = {
 export function DataTableActionRow<T>(
   props?: Partial<DataTableActionRowProps>
 ): DisplayColumnDef<T> {
-  const { noEdit = false, noExclusion = false } = props ?? {};
+  const {
+    noDetails = false,
+    noEdit = false,
+    noExclusion = false,
+  } = props ?? {};
 
   return {
     header: 'Actions',
@@ -24,13 +29,15 @@ export function DataTableActionRow<T>(
 
       return (
         <HStack spacing={2} justifyContent='flex-end'>
-          <IconButton
-            size='sm'
-            variant='ghost'
-            aria-label='details'
-            icon={<FiEye />}
-            onClick={() => router.push(itemPath)}
-          />
+          {noDetails ? null : (
+            <IconButton
+              size='sm'
+              variant='ghost'
+              aria-label='details'
+              icon={<FiEye />}
+              onClick={() => router.push(itemPath)}
+            />
+          )}
 
           {noEdit ? null : (
             <IconButton

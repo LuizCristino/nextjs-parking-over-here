@@ -16,7 +16,7 @@ const columns = [
   }),
 ];
 
-export default function Vehicles() {
+export default function Tickets() {
   const { page, perPage } = useExtractPaginationFromUrl();
   const { data: response, isLoading } = useSWR<RemotePagination<RemoteTicket>>(
     `/api/${resource}?page=${page}&per_page=${perPage}`

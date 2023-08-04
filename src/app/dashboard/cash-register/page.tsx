@@ -32,10 +32,15 @@ const columns = [
     header: 'Value',
   }),
 
-  columnHelper.display(DataTableActionRow()),
+  columnHelper.display(
+    DataTableActionRow({
+      noDetails: true,
+      noExclusion: true,
+    })
+  ),
 ];
 
-export default function Vehicles() {
+export default function CashRegister() {
   const { page, perPage } = useExtractPaginationFromUrl();
   const { data: response, isLoading } = useSWR<
     RemotePagination<RemoteCashRegister>

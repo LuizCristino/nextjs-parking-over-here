@@ -29,6 +29,7 @@ export function DataTablePagination<T>(props: DataTablePaginationProps<T>) {
 
   const firstItemIndex = (current - 1) * perPage + 1;
   const lastItemIndex = current * perPage > total ? total : current * perPage;
+  const hideShowing = firstItemIndex > total;
 
   return (
     <Stack
@@ -37,17 +38,19 @@ export function DataTablePagination<T>(props: DataTablePaginationProps<T>) {
       justifyContent={{ lg: 'space-between' }}
       direction={{ base: 'column', lg: 'row' }}
     >
-      <HStack as='nav' aria-label='table navigation'>
-        <Text as='span' fontWeight='normal' color='gray.500' h='full'>
-          Showing{' '}
-          <Text as='span' fontWeight='semibold' color='gray.900'>
-            {firstItemIndex} - {lastItemIndex}
-          </Text>{' '}
-          of{' '}
-          <Text as='span' fontWeight='semibold' color='gray.900'>
-            {total}
+      <HStack as='nav' aria-label='table resume'>
+        {hideShowing ? null : (
+          <Text as='span' fontWeight='normal' color='gray.500' h='full'>
+            Showing{' '}
+            <Text as='span' fontWeight='semibold' color='gray.900'>
+              {firstItemIndex} - {lastItemIndex}
+            </Text>{' '}
+            of{' '}
+            <Text as='span' fontWeight='semibold' color='gray.900'>
+              {total}
+            </Text>
           </Text>
-        </Text>
+        )}
       </HStack>
 
       <HStack alignSelf='flex-end'>

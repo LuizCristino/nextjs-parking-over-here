@@ -32,7 +32,7 @@ const columns = [
   }),
 ];
 
-export default function Vehicles() {
+export default function Types() {
   const { page, perPage } = useExtractPaginationFromUrl();
   const { data: response, isLoading } = useSWR<
     RemotePagination<RemoteVehicleType>
