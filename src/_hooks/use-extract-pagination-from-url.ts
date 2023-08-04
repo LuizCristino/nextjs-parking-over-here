@@ -1,8 +1,6 @@
 import { DEFAULT_VALUES } from '@/_config/default-values';
 import { SafeCast } from '@/_utilities/safe-cast';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-console.log('PORRA');
+import { useSearchParams } from 'next/navigation';
 
 export function useExtractPaginationFromUrl() {
   const searchParams = useSearchParams();

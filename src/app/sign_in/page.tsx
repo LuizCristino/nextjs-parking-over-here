@@ -12,26 +12,45 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/react';
+import { SignInResponse, signIn, useSession } from 'next-auth/react';
 import { redirect, useSearchParams } from 'next/navigation';
 import { FormEvent } from 'react';
+import { toast } from 'react-toastify';
 
 export default function SignIn() {
   const { status } = useSession();
-
-  if (status === 'authenticated') {
-    return redirect('/dashboard');
-  }
-
   const searchParams = useSearchParams();
+
+  // This will prevent from authenticated user accessing this screen
+  // Also will redirect back the authenticated user from where he came
+  // from after the successful sign in
+  if (status === 'authenticated') {
+    return redirect(searchParams.get('callbackUrl') ?? '/dashboard');
+  }
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    signIn('credentials', {
-      username: (event.target as any).username.value,
-      password: (event.target as any).password.value,
-      redirect: true,
-      callbackUrl: searchParams.get('callbackUrl') ?? '/dashboard',
+
+    const promiseSignIn = new Promise<SignInResponse | undefined>(
+      async (resolve, reject) => {
+        const result = await signIn('credentials', {
+          username: (event.target as any).username.value,
+          password: (event.target as any).password.value,
+          redirect: false,
+        });
+
+        if (result == null || result.error != null) {
+          return reject(result);
+        }
+
+        return resolve(result);
+      }
+    );
+
+    toast.promise(promiseSignIn, {
+      pending: 'Authenticating',
+      success: 'Welcome to Parking Over Here 😁',
+      error: 'Invalid credentials 🤯',
     });
   };
 
@@ -43,7 +62,7 @@ export default function SignIn() {
         </Stack>
 
         <Box rounded='lg' bg='white' boxShadow='lg' p={8}>
-          <form onSubmit={onSubmitHandler}>
+          <form action='#' onSubmit={onSubmitHandler}>
             <Stack spacing={4}>
               <FormControl id='email'>
                 <FormLabel htmlFor='username'>Email address</FormLabel>

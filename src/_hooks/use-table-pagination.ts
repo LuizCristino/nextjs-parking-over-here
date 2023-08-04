@@ -4,7 +4,7 @@ import { DEFAULT_VALUES } from '@/_config/default-values';
 import { SafeCast } from '@/_utilities/safe-cast';
 import { PaginationState } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCreateQueryString } from './use-create-query-string';
 
 export function useTablePagination() {
@@ -21,21 +21,34 @@ export function useTablePagination() {
     ),
   });
 
-  useEffect(() => {
-    if (pageIndex != null) {
-      router.push(
-        pathname + '?' + createQueryString('page', String(pageIndex + 1))
-      );
-    }
-  }, [pageIndex]);
+  const pagination = useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize]
+  );
 
   useEffect(() => {
+    const { pageIndex, pageSize } = pagination;
+
+    let query = '';
+
     if (pageSize != null) {
-      router.push(
-        pathname + '?' + createQueryString('per_page', String(pageSize))
-      );
+      query = createQueryString('per_page', String(pageSize));
     }
-  }, [pageSize]);
 
-  return { pageIndex, pageSize, setPagination };
+    if (pageIndex != null) {
+      query = createQueryString('page', String(pageIndex + 1));
+    }
+
+    router.push(`${pathname}?${query}`);
+  }, [pagination]);
+
+  useEffect(() => {}, [pageSize]);
+
+  return useMemo(
+    () => ({ ...pagination, setPagination }),
+    [pagination, setPagination]
+  );
 }

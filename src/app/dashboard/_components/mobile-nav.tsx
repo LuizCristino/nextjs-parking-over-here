@@ -92,7 +92,7 @@ export function MobileNav(props: MobileProps) {
                   spacing='1px'
                   ml='2'
                 >
-                  <Text fontSize='sm'>Justina Clark</Text>
+                  <Text fontSize='sm'>{session.data.user.email}</Text>
 
                   <Text fontSize='xs' color='gray.600'>
                     Admin

@@ -32,7 +32,7 @@ const columns = [
 
 export default function Users() {
   const { page, perPage } = useExtractPaginationFromUrl();
-  const { data: rows, isLoading } = useSWR<RemotePagination<RemoteUser>>(
+  const { data: response, isLoading } = useSWR<RemotePagination<RemoteUser>>(
     `/api/${resource}?page=${page}&per_page=${perPage}`
   );
 
@@ -40,5 +40,12 @@ export default function Users() {
     return null;
   }
 
-  return <DataTable data={rows!.data} columns={columns} />;
+  return (
+    <DataTable
+      data={response!.data}
+      columns={columns}
+      total={response!.total}
+      totalPages={response!.total_pages}
+    />
+  );
 }

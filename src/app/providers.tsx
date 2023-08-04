@@ -4,7 +4,9 @@ import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import { type ReactNode } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { SWRConfig } from 'swr';
+import { ToastProvider } from './toast-provider';
 
 export type ProviderProps = {
   children: ReactNode;
@@ -15,7 +17,9 @@ export function Providers({ children }: ProviderProps) {
     <CacheProvider>
       <ChakraProvider theme={theme}>
         <SWRConfig value={value}>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </SessionProvider>
         </SWRConfig>
       </ChakraProvider>
     </CacheProvider>

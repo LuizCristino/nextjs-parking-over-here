@@ -1,12 +1,12 @@
-import { DEFAULT_VALUES } from '@/config';
-import { number } from './safe-cast';
+import { DEFAULT_VALUES } from '@/_config/default-values';
+import { SafeCast } from './safe-cast';
 
-export function limitOffset(
+function limitOffset(
   page: number,
   perPage: number
 ): { skip: number; take: number } {
-  const _page = number(page, 1, { min: 1 });
-  const _perPage = number(perPage, DEFAULT_VALUES.ITEMS_PER_PAGE_MIN, {
+  const _page = SafeCast.number(page, 1, { min: 1 });
+  const _perPage = SafeCast.number(perPage, DEFAULT_VALUES.ITEMS_PER_PAGE_MIN, {
     min: DEFAULT_VALUES.ITEMS_PER_PAGE_MIN,
     max: DEFAULT_VALUES.ITEMS_PER_PAGE_MAX,
   });
@@ -42,9 +42,7 @@ const defaultOptions = {
   skipString: '...',
 } as const;
 
-export function generate(
-  options: Partial<Options> | undefined = undefined
-): string[] {
+function generate(options: Partial<Options> | undefined = undefined): string[] {
   const { current, end, sides, start, skipString } = {
     ...defaultOptions,
     ...(options || {}),
@@ -100,3 +98,5 @@ export function generate(
 
   return pagination;
 }
+
+export const Pagination = { generate, limitOffset };

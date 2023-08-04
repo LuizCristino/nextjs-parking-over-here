@@ -34,13 +34,20 @@ const columns = [
 
 export default function Vehicles() {
   const { page, perPage } = useExtractPaginationFromUrl();
-  const { data: rows, isLoading } = useSWR<RemotePagination<RemoteVehicleType>>(
-    `/api/${resource}?page=${page}&per_page=${perPage}`
-  );
+  const { data: response, isLoading } = useSWR<
+    RemotePagination<RemoteVehicleType>
+  >(`/api/${resource}?page=${page}&per_page=${perPage}`);
 
   if (isLoading) {
     return null;
   }
 
-  return <DataTable data={rows!.data} columns={columns} />;
+  return (
+    <DataTable
+      data={response!.data}
+      columns={columns}
+      total={response!.total}
+      totalPages={response!.total_pages}
+    />
+  );
 }
