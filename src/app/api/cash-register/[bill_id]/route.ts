@@ -2,8 +2,7 @@ import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { NextApiRequest } from 'next';
-
-const resource = 'cash-register';
+import { resource } from '../config';
 
 export async function GET(
   request: NextApiRequest,
