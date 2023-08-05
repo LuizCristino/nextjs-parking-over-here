@@ -39,8 +39,6 @@ export default function SignIn() {
           redirect: false,
         });
 
-        console.log('RESULT', result);
-
         if (result == null || result.error != null) {
           return reject(result);
         }

@@ -3,8 +3,7 @@ import { DEFAULT_VALUES } from '@/_config/default-values';
 import { SafeCast } from '@/_utilities/safe-cast';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-
-const resource = 'vehicle-types';
+import { resource } from './config';
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);

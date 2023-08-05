@@ -36,8 +36,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        console.log('AQUI NESSA CARALHA');
-
         const response = await fetch(`${api}/v1/auth/sign_in`, {
           method: 'POST',
           headers: {
