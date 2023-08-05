@@ -3,7 +3,7 @@
 import { DataTable } from '@/_components/data-table';
 import { DataTableActionRow } from '@/_components/data-table-action-row';
 import { useExtractPaginationFromUrl } from '@/_hooks/use-extract-pagination-from-url';
-import { Center } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import useSWR from 'swr';
 
@@ -28,8 +28,18 @@ const columns = [
   }),
 
   columnHelper.accessor('value', {
-    cell: (info) => <Center>{(info.getValue() / 100).toFixed(2)}</Center>,
     header: 'Value',
+    cell: (info) => {
+      const value = info.getValue();
+      const isValid = value != null && value > 0;
+      const formatted = (value / 100).toFixed(2);
+
+      return (
+        <Box textAlign={isValid ? 'end' : 'center'}>
+          {isValid ? `$${formatted}` : '-'}
+        </Box>
+      );
+    },
   }),
 
   columnHelper.display(

@@ -31,7 +31,19 @@ type RemoteVehicleType = {
 
 type RemoteTicket = {
   id: string;
+  invoice: RemoteInvoice | null;
+  vehicle: RemoteVehicle;
 } & RemoteTimeStamp;
+
+type RemoteInvoice = {
+  id: string;
+  paid: number;
+  change: number;
+  charged: number;
+  status: RemoteInvoiceStatus;
+} & RemoteTimeStamp;
+
+type RemoteInvoiceStatus = 'paid' | 'pending';
 
 type RemoteCashRegister = {
   id: string;

@@ -2,7 +2,7 @@
 
 import { DataTable } from '@/_components/data-table';
 import { useExtractPaginationFromUrl } from '@/_hooks/use-extract-pagination-from-url';
-import { Center } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import useSWR from 'swr';
 
@@ -17,18 +17,38 @@ const columns = [
   }),
 
   columnHelper.accessor('name', {
-    cell: (info) => info.getValue(),
     header: 'Name',
+    cell: (info) => info.getValue(),
   }),
 
   columnHelper.accessor('initial_price', {
-    cell: (info) => <Center>{(info.getValue() / 100).toFixed(2)}</Center>,
     header: 'Initial price',
+    cell: (info) => {
+      const value = info.getValue();
+      const isValid = value != null;
+      const formatted = (value / 100).toFixed(2);
+
+      return (
+        <Box textAlign={isValid ? 'end' : 'center'}>
+          {isValid ? `$${formatted}` : '-'}
+        </Box>
+      );
+    },
   }),
 
   columnHelper.accessor('price_per_hour', {
-    cell: (info) => <Center>{(info.getValue() / 100).toFixed(2)}</Center>,
     header: 'Price per hour',
+    cell: (info) => {
+      const value = info.getValue();
+      const isValid = value != null;
+      const formatted = (value / 100).toFixed(2);
+
+      return (
+        <Box textAlign={isValid ? 'end' : 'center'}>
+          {isValid ? `$${formatted}` : '-'}
+        </Box>
+      );
+    },
   }),
 ];
 
