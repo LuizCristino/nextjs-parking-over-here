@@ -15,7 +15,3 @@ services:
     command: npm run dev
     ports:
       - '${FORWARD_PORT:-3000}:${PORT:-3000}'
-networks:
-  parking_over_here:
-    name: parking_over_here
-    external: true
