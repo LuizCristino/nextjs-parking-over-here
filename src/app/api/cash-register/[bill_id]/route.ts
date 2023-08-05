@@ -1,11 +1,10 @@
+import { authOptions } from '@/_config/auth';
 import { getServerSession } from 'next-auth/next';
-import { NextResponse } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/route';
-import { NextApiRequest } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { resource } from '../config';
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { bill_id: string } }
 ) {
   const session = await getServerSession(authOptions);
@@ -25,7 +24,7 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { bill_id: string } }
 ) {
   const session = await getServerSession(authOptions);

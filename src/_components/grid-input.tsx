@@ -25,6 +25,7 @@ export function GridInput(props: GridInputProps) {
 
   const InputComponent = useMemo(() => {
     if (inputProps?.type === 'number') {
+      // eslint-disable-next-line react/display-name
       return () => (
         <NumberInput {...(inputProps as any)}>
           <NumberInputField />
@@ -36,6 +37,7 @@ export function GridInput(props: GridInputProps) {
       );
     }
 
+    // eslint-disable-next-line react/display-name
     return () => (
       <Input
         type='text'

@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-  "name": "Parking Overhere Admin",
+  "name": "Parking Over Here Admin",
   "dockerComposeFile": ["../docker-compose.yml"],
   "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind"],
   "service": "api",

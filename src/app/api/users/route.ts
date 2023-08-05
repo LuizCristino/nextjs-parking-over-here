@@ -1,8 +1,8 @@
+import { authOptions } from '@/_config/auth';
 import { DEFAULT_VALUES } from '@/_config/default-values';
 import { SafeCast } from '@/_utilities/safe-cast';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { authOptions } from '../auth/[...nextauth]/route';
 
 const resource = 'users';
 

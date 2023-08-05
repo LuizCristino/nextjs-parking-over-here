@@ -1,10 +1,9 @@
+import { authOptions } from '@/_config/auth';
 import { getServerSession } from 'next-auth/next';
-import { NextResponse } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/route';
-import { NextApiRequest } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { resource } from '../config';
 
-export async function GET(request: NextApiRequest) {
+export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {

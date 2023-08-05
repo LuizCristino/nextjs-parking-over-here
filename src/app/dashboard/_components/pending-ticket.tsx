@@ -14,7 +14,7 @@ import { FiDollarSign, FiMoreVertical } from 'react-icons/fi';
 import { differenceInHours, format } from 'date-fns';
 import Link from 'next/link';
 
-export function OpenTicket(props: RemoteTicket) {
+export function PendingTicket(props: RemoteTicket) {
   const {
     id,
     vehicle: {

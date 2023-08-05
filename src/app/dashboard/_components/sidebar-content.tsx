@@ -17,6 +17,7 @@ import {
 } from 'react-icons/fi';
 import { UrlObject } from 'url';
 import { NavItem } from './nav-item';
+import Image from 'next/image';
 
 export type LinkItemProps = {
   name: string;
@@ -55,9 +56,14 @@ export function SidebarContent(props: SidebarProps) {
       h='full'
       {...rest}
     >
-      <Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
+      <Flex
+        h='20'
+        alignItems='center'
+        mx='8'
+        justifyContent={{ base: 'space-between', md: 'space-around' }}
+      >
         <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
-          Logo
+          POH
         </Text>
 
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />

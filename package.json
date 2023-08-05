@@ -11,6 +11,7 @@
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "^2.8.0",
+    "@choc-ui/chakra-autocomplete": "^5.1.9",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-table": "^8.9.3",
@@ -30,6 +31,7 @@
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
     "react-toastify": "^9.1.3",
     "swr": "^2.2.0",

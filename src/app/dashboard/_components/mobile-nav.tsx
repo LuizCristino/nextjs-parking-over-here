@@ -28,6 +28,9 @@ export function MobileNav(props: MobileProps) {
 
   const session = useSession();
 
+  const bgColor = useColorModeValue('white', 'gray.900');
+  const borderBottomColor = useColorModeValue('gray.200', 'gray.700');
+
   if (session.data?.user == null) {
     return null;
   }
@@ -42,9 +45,9 @@ export function MobileNav(props: MobileProps) {
       px={{ base: 4, md: 4 }}
       height='20'
       alignItems='center'
-      bg={useColorModeValue('white', 'gray.900')}
+      bg={bgColor}
       borderBottomWidth='1px'
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+      borderBottomColor={borderBottomColor}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       {...rest}
     >
@@ -62,7 +65,7 @@ export function MobileNav(props: MobileProps) {
         fontFamily='monospace'
         fontWeight='bold'
       >
-        Logo
+        POH
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
@@ -105,10 +108,7 @@ export function MobileNav(props: MobileProps) {
               </HStack>
             </MenuButton>
 
-            <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}
-            >
+            <MenuList bg={bgColor} borderColor={borderBottomColor}>
               <MenuItem
                 icon={<FiLogOut />}
                 color='red.500'

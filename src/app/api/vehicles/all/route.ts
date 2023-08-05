@@ -1,7 +1,8 @@
 import { authOptions } from '@/_config/auth';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { resource } from '../config';
+
+const resource = 'vehicles';
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
@@ -11,11 +12,11 @@ export async function GET(request: Request) {
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/${resource}/not-finalized`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/${resource}/all`,
     { method: 'GET', headers: { Authorization: 'Bearer ' + session.token } }
   ).then((res) => res.json());
 
-  return NextResponse.json<RemoteTicket[]>(res, {
+  return NextResponse.json<RemoteDetailedVehicle[]>(res, {
     status: 200,
   });
 }

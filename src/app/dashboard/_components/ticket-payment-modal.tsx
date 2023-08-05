@@ -22,7 +22,14 @@ import {
 import { differenceInHours } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FormEventHandler, Fragment, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  memo,
+  useEffect,
+  useState,
+} from 'react';
 import { FiPlus, FiTrash } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
@@ -50,6 +57,7 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
 
   useEffect(() => {
     if (ticket?.id == null) {
+      /* Clear state after closing modal */
       setSelected([]);
     }
   }, [ticket?.id]);
@@ -91,6 +99,20 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
         },
       },
     });
+  };
+
+  const addNewRow = () => {
+    setSelected((prev) => [
+      ...prev,
+      {
+        /* Key will always be incremental  */
+        key: (prev[prev.length - 1]?.key ?? 0) + 1,
+        id: '',
+        name: '',
+        value: 0,
+        quantity: 0,
+      },
+    ]);
   };
 
   let total = 0;
@@ -135,101 +157,12 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
           <Box>
             <SimpleGrid columns={6} spacing={4}>
               {selected.map((row) => (
-                <Fragment key={row.key}>
-                  <GridItem colSpan={3}>
-                    <FormLabel
-                      fontSize='sm'
-                      fontWeight='md'
-                      color='gray.700'
-                      mb={3}
-                      _dark={{ color: 'gray.50' }}
-                    >
-                      Bill
-                    </FormLabel>
-
-                    <Select
-                      placeholder='Select bill'
-                      onChange={(evt) => {
-                        setSelected((prev) => {
-                          const index = prev.findIndex(
-                            (p) => p.key === row.key
-                          );
-
-                          const cash = bills?.find(
-                            (b) => b.id === evt.target.value
-                          );
-
-                          return [
-                            ...prev.slice(0, index),
-                            {
-                              ...prev[index],
-                              ...(cash ?? {
-                                id: '',
-                                name: '',
-                                value: 0,
-                                quantity: 0,
-                              }),
-                            },
-                            ...prev.slice(index + 1),
-                          ];
-                        });
-                      }}
-                    >
-                      {bills?.map((bill) => (
-                        <option key={bill.id} value={bill.id}>
-                          {bill.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </GridItem>
-
-                  <GridInput
-                    isDisabled={row.id === ''}
-                    colSpan={2}
-                    label='Quantity'
-                    type='number'
-                    min={1}
-                    step={1}
-                    value={row.quantity}
-                    onChange={(value) => {
-                      setSelected((prev) => {
-                        const index = prev.findIndex((p) => p.key === row.key);
-
-                        return [
-                          ...prev.slice(0, index),
-                          { ...prev[index], quantity: +value },
-                          ...prev.slice(index + 1),
-                        ];
-                      });
-                    }}
-                  />
-                  <GridItem
-                    colSpan={1}
-                    alignSelf='flex-end'
-                    justifySelf='center'
-                  >
-                    <IconButton
-                      aria-label='remove line'
-                      color='white'
-                      _light={{ bg: 'red.500' }}
-                      _dark={{ bg: 'red.500' }}
-                      _hover={{ bg: 'red.700' }}
-                      icon={<FiTrash />}
-                      onClick={() =>
-                        setSelected((prev) => {
-                          const index = prev.findIndex(
-                            (p) => p.key === row.key
-                          );
-
-                          return [
-                            ...prev.slice(0, index),
-                            ...prev.slice(index + 1),
-                          ];
-                        })
-                      }
-                    />
-                  </GridItem>
-                </Fragment>
+                <RowComponent
+                  key={row.key}
+                  row={row}
+                  onChange={setSelected}
+                  bills={bills}
+                />
               ))}
 
               <GridItem colStart={6} colSpan={1} justifySelf='center'>
@@ -240,18 +173,7 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
                   _dark={{ bg: 'blue.500' }}
                   _hover={{ bg: 'blue.700' }}
                   icon={<FiPlus />}
-                  onClick={() => {
-                    setSelected((prev) => [
-                      ...prev,
-                      {
-                        key: (prev[prev.length - 1]?.key ?? 0) + 1,
-                        id: '',
-                        name: '',
-                        value: 0,
-                        quantity: 0,
-                      },
-                    ]);
-                  }}
+                  onClick={addNewRow}
                 />
               </GridItem>
             </SimpleGrid>
@@ -279,3 +201,108 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
     </Modal>
   );
 }
+
+type Row = ResumedBill & { key: number; quantity: number };
+
+type RowComponentProps = {
+  row: Row;
+  bills?: ResumedBill[] | undefined;
+  onChange: Dispatch<SetStateAction<Row[]>>;
+};
+
+const RowComponent = memo(function RowComponent(props: RowComponentProps) {
+  const { row, onChange, bills } = props;
+
+  const onSelectHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    onChange((prev) => {
+      /* Finding which index is being altered */
+      const index = prev.findIndex((p) => p.key === row.key);
+
+      /* Get all data of the bill */
+      const cash = bills?.find((b) => b.id === event.target.value);
+
+      /* Update state to reflect the new selected bill */
+      return [
+        ...prev.slice(0, index),
+        {
+          ...prev[index],
+          ...(cash ?? {
+            id: '',
+            name: '',
+            value: 0,
+            quantity: 0,
+          }),
+        },
+        ...prev.slice(index + 1),
+      ];
+    });
+  };
+
+  const onQuantityHandler = (value: string) => {
+    onChange((prev) => {
+      const index = prev.findIndex((p) => p.key === row.key);
+
+      return [
+        ...prev.slice(0, index),
+        { ...prev[index], quantity: +value },
+        ...prev.slice(index + 1),
+      ];
+    });
+  };
+
+  const onRemoveHandler = () => {
+    onChange((prev) => {
+      const index = prev.findIndex((p) => p.key === row.key);
+
+      return [...prev.slice(0, index), ...prev.slice(index + 1)];
+    });
+  };
+
+  return (
+    <>
+      <GridItem colSpan={3}>
+        <FormLabel
+          fontSize='sm'
+          fontWeight='md'
+          color='gray.700'
+          mb={3}
+          _dark={{ color: 'gray.50' }}
+        >
+          Bill
+        </FormLabel>
+
+        <Select placeholder='Select bill' onChange={onSelectHandler}>
+          {bills?.map((bill) => (
+            <option key={bill.id} value={bill.id}>
+              {bill.name}
+            </option>
+          ))}
+        </Select>
+      </GridItem>
+
+      <GridInput
+        isDisabled={row.id === ''}
+        colSpan={2}
+        label='Quantity'
+        type='number'
+        min={1}
+        step={1}
+        value={row.quantity}
+        // @ts-expect-error when type is number the onChange is
+        // wrongly typed
+        onChange={onQuantityHandler}
+      />
+      <GridItem colSpan={1} alignSelf='flex-end' justifySelf='center'>
+        <IconButton
+          aria-label='remove line'
+          color='white'
+          _light={{ bg: 'red.500' }}
+          _dark={{ bg: 'red.500' }}
+          _hover={{ bg: 'red.700' }}
+          icon={<FiTrash />}
+          onClick={onRemoveHandler}
+        />
+      </GridItem>
+    </>
+  );
+});

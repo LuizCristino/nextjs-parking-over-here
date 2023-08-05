@@ -21,13 +21,14 @@ export default function DashboardLayout(props: DashboardLayoutProps) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const session = useSession();
+  const bgColor = useColorModeValue('gray.100', 'gray.900');
 
   if (session.data?.user == null) {
     return null;
   }
 
   return (
-    <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH='100vh' bg={bgColor}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}

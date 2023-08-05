@@ -2,8 +2,10 @@
 
 import { GridItem, SimpleGrid } from '@chakra-ui/react';
 import useSWR from 'swr';
-import { OpenTicket } from './_components/open-ticket';
+import { PendingTicket } from './_components/pending-ticket';
 import { TicketPaymentModal } from './_components/ticket-payment-modal';
+import { NewTicketButton } from './_components/new-ticket-button';
+import { NewTicketModal } from './_components/new-ticket-modal';
 
 type DashboardProps = {
   searchParams: { modal: string } | undefined;
@@ -20,14 +22,16 @@ export default function Dashboard(props: DashboardProps) {
     return null;
   }
 
-  const ticketId = searchParams?.modal;
+  const ticketId = searchParams?.modal && searchParams?.modal !== 'new-ticket';
+  const newTicket =
+    (searchParams?.modal && searchParams?.modal === 'new-ticket') || false;
 
   return (
     <>
       <SimpleGrid columns={4} spacing={6}>
         {tickets?.map((ticket) => (
           <GridItem key={ticket.id} colSpan={{ base: 4, sm: 2, lg: 1 }}>
-            <OpenTicket {...ticket} />
+            <PendingTicket {...ticket} />
           </GridItem>
         ))}
       </SimpleGrid>
@@ -35,6 +39,10 @@ export default function Dashboard(props: DashboardProps) {
       <TicketPaymentModal
         ticket={tickets?.find((ticket) => ticket.id === ticketId)}
       />
+
+      <NewTicketButton />
+
+      <NewTicketModal isOpen={newTicket} />
     </>
   );
 }

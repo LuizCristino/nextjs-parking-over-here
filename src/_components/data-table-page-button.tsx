@@ -14,6 +14,8 @@ export function DataTablePageButton<T>(props: DataTablePageButtonProps<T>) {
 
   const isDisabled = page === '...' || isCurrent;
 
+  const currentColor = useColorModeValue('gray.100', 'gray.900');
+
   const onClickHandler = () => {
     if (!isDisabled) {
       table.setPageIndex(+page - 1);
@@ -29,7 +31,7 @@ export function DataTablePageButton<T>(props: DataTablePageButtonProps<T>) {
         isCurrent
           ? {
               backgroundColor: 'blue.300',
-              color: useColorModeValue('gray.100', 'gray.900'),
+              color: currentColor,
               _hover: { backgroundColor: 'blue.300' },
             }
           : undefined

@@ -1,11 +1,10 @@
+import { authOptions } from '@/_config/auth';
 import { getServerSession } from 'next-auth';
-import { NextResponse } from 'next/server';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import { NextRequest, NextResponse } from 'next/server';
 import { resource } from '../../config';
-import { NextApiRequest } from 'next';
 
 export async function POST(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { ticket_id: string } }
 ) {
   const session = await getServerSession(authOptions);
@@ -28,7 +27,5 @@ export async function POST(
     }
   );
 
-  return NextResponse.json<RemotePagination<RemoteCashRegister>>(null, {
-    status: res.status,
-  });
+  return NextResponse.json({}, { status: res.status });
 }

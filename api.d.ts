@@ -29,10 +29,12 @@ type RemoteVehicleType = {
   initial_price: number;
 } & RemoteTimeStamp;
 
+type RemoteDetailedVehicle = RemoteVehicle & { type: RemoteVehicleType };
+
 type RemoteTicket = {
   id: string;
   invoice: RemoteInvoice | null;
-  vehicle: RemoteVehicle & { type: RemoteVehicleType };
+  vehicle: RemoteDetailedVehicle;
 } & RemoteTimeStamp;
 
 type RemoteInvoice = {
