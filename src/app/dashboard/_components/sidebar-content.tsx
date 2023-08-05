@@ -8,16 +8,16 @@ import {
 } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 import {
+  FiBook,
   FiDollarSign,
+  FiFileText,
   FiHome,
-  FiSquare,
   FiTag,
   FiTruck,
   FiUser,
 } from 'react-icons/fi';
 import { UrlObject } from 'url';
 import { NavItem } from './nav-item';
-import Image from 'next/image';
 
 export type LinkItemProps = {
   name: string;
@@ -33,12 +33,17 @@ const items: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/dashboard' },
   { name: 'Users', icon: FiUser, href: '/dashboard/users' },
   { name: 'Vehicles', icon: FiTruck, href: '/dashboard/vehicles' },
-  { name: 'Vehicle Types', icon: FiSquare, href: '/dashboard/vehicle-types' },
-  { name: 'Tickets', icon: FiTag, href: '/dashboard/tickets' },
+  { name: 'Vehicle Types', icon: FiTag, href: '/dashboard/vehicle-types' },
+  { name: 'Tickets', icon: FiFileText, href: '/dashboard/tickets' },
   {
     name: 'Cash Register',
     icon: FiDollarSign,
     href: '/dashboard/cash-register',
+  },
+  {
+    name: 'Transaction logs',
+    icon: FiBook,
+    href: '/dashboard/transaction-logs',
   },
 ];
 

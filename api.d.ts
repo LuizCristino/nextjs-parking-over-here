@@ -53,3 +53,20 @@ type RemoteCashRegister = {
   value: number;
   quantity: number;
 } & RemoteTimeStamp;
+
+type RemoteTransactionLogType = 'IN' | 'OUT';
+
+type RemoteTransactionLogBill = {
+  id: string;
+  value;
+  number: number;
+  quantity: number;
+};
+
+type RemoteTransactionLog = {
+  id: string;
+  bills: RemoteTransactionLogBill[];
+  ticket: RemoteTicket;
+  type: RemoteTransactionLogType;
+  total: number;
+} & RemoteTimeStamp;
