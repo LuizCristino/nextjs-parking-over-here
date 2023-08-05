@@ -101,7 +101,7 @@ export function NewTicketModal(props: NewTicketModalProps) {
     toast.promise(response, {
       pending: 'Saving...',
       error: {
-        render({ data }) {
+        render({ data }: any) {
           return data?.message ?? 'Error';
         },
       },
