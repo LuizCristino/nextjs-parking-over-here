@@ -23,4 +23,4 @@ NEXTAUTH_URL=http://localhost
 docker compose up -d
 ```
 
-3. Acessar a a url `localhost:3000` para ver a tela de login
+3. Acessar a a url `localhost:3000` para ver a tela de login, acessos são gerados pelo outro projeto
