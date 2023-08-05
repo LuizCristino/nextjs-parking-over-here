@@ -1,10 +1,11 @@
 'use client';
 
 import { DataTable } from '@/_components/data-table';
+import { TooltipedIcon } from '@/_components/tooltiped-icon';
 import { useExtractPaginationFromUrl } from '@/_hooks/use-extract-pagination-from-url';
 import { Center } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { FiCheckCircle, FiCircle } from 'react-icons/fi';
 import useSWR from 'swr';
 
 const resource = 'users';
@@ -13,20 +14,34 @@ const columnHelper = createColumnHelper<RemoteUser>();
 
 const columns = [
   columnHelper.accessor('id', {
-    cell: (info) => info.getValue(),
     header: 'ID',
+    cell: (info) => info.getValue(),
   }),
 
   columnHelper.accessor('email', {
-    cell: (info) => info.getValue(),
     header: 'E-mail',
+    cell: (info) => info.getValue(),
   }),
 
   columnHelper.accessor('is_active', {
+    header: () => <Center>Is Active</Center>,
     cell: (info) => (
-      <Center>{info.getValue() ? <FiCheckCircle /> : <FiXCircle />}</Center>
+      <Center>
+        {!info.getValue() ? (
+          <TooltipedIcon
+            as={FiCheckCircle}
+            label='Active user'
+            color='green.500'
+          />
+        ) : (
+          <TooltipedIcon
+            as={FiCircle}
+            label='Inactive user'
+            color='yellow.500'
+          />
+        )}
+      </Center>
     ),
-    header: 'Is Active',
   }),
 ];
 
