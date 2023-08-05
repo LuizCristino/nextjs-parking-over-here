@@ -27,7 +27,7 @@ const columns = [
     header: () => <Center>Is Active</Center>,
     cell: (info) => (
       <Center>
-        {!info.getValue() ? (
+        {info.getValue() ? (
           <TooltipedIcon
             as={FiCheckCircle}
             label='Active user'
