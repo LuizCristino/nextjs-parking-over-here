@@ -45,7 +45,10 @@ export async function POST(request: NextRequest) {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/${resource}`,
     {
       method: 'POST',
-      headers: { Authorization: 'Bearer ' + session.token },
+      headers: {
+        Authorization: 'Bearer ' + session.token,
+        'Content-Type': 'application/json',
+      },
       body: request.body,
       // @ts-ignore
       duplex: 'half',

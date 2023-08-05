@@ -89,20 +89,25 @@ export function NewTicketModal(props: NewTicketModalProps) {
     const response = fetch(`${process.env.NEXT_PUBLIC_URL}/api/tickets/`, {
       method: 'POST',
       body: JSON.stringify(payload),
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.ok) {
         return res;
       } else {
-        throw new Error('' + res.status);
+        const json = await res.json();
+        throw new Error(json.message);
       }
     });
 
     toast.promise(response, {
       pending: 'Saving...',
-      error: 'Error',
+      error: {
+        render({ data }) {
+          return data?.message ?? 'Error';
+        },
+      },
       success: {
         render() {
-          router.push('/dashboard');
+          router.replace('/');
 
           return 'Saved!';
         },

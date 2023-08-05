@@ -93,7 +93,7 @@ export function TicketPaymentModal(props: TicketPaymentModalProps) {
       error: 'Error',
       success: {
         render() {
-          router.push('/dashboard');
+          router.replace('/');
 
           return 'Saved!';
         },

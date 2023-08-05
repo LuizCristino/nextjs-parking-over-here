@@ -22,7 +22,11 @@ export default function Dashboard(props: DashboardProps) {
     return null;
   }
 
-  const ticketId = searchParams?.modal && searchParams?.modal !== 'new-ticket';
+  const ticketId =
+    searchParams?.modal && searchParams?.modal !== 'new-ticket'
+      ? searchParams.modal
+      : undefined;
+
   const newTicket =
     (searchParams?.modal && searchParams?.modal === 'new-ticket') || false;
 
