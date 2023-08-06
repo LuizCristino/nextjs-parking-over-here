@@ -5,11 +5,10 @@ services:
     build:
       dockerfile: ./.docker/Dockerfile
       context: .
-      target: development
+      target: production
     volumes:
       - .:/usr/src/app
     env_file:
       - .env
-    command: npm run dev
     ports:
       - '${FORWARD_PORT:-3000}:${PORT:-3000}'

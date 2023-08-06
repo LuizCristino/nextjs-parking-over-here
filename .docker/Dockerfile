@@ -7,6 +7,8 @@ FROM node:18-alpine AS development
 # Create app directory
 WORKDIR /usr/src/app
 
+EXPOSE 3000
+
 RUN apk add --update --no-cache openssh-client git
 
 # Copy application dependency manifests to the container image.
