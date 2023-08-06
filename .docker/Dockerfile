@@ -58,8 +58,9 @@ USER node
 FROM node:18-alpine AS production
 
 # Copy the bundled code from the build stage to the production image
+COPY --chown=node:node package*.json ./
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/.next ./next
+COPY --chown=node:node --from=build /usr/src/app/.next ./.next
 
 # Start the server using the production build
 CMD [ "npm", "run", "start" ]
